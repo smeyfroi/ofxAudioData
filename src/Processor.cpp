@@ -1,4 +1,5 @@
 #include "Processor.hpp"
+#include "ofUtils.h"
 
 namespace ofxAudioData {
 
@@ -18,6 +19,10 @@ float Processor::getScalarValue(ofxAudioAnalysisClient::AnalysisScalar scalar) {
   return audioAnalysisClientPtr->getScalarValue(scalar);
 }
 
+float* Processor::getScalarValuePtr(int scalar) {
+  return audioAnalysisClientPtr->getScalarValuePtr(scalar);
+}
+
 float Processor::getNormalisedScalarValue(ofxAudioAnalysisClient::AnalysisScalar scalar, float minValue, float maxValue, bool isLinear) {
   float value = getScalarValue(scalar);
   if (!isLinear) {
@@ -27,7 +32,7 @@ float Processor::getNormalisedScalarValue(ofxAudioAnalysisClient::AnalysisScalar
   }
   value = ofMap(value, minValue, maxValue, 0.0, 1.0);
   value = std::abs(value);
-  return value - std::floor(value);
+  return value - std::floor(value); // wrap around
 }
 
 }

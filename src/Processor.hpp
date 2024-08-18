@@ -11,6 +11,7 @@ public:
   void update();
   bool isDataValid();
   float getScalarValue(ofxAudioAnalysisClient::AnalysisScalar scalar);
+  float* getScalarValuePtr(int scalar); // for Plots, via ofxHistoryPlot
   float getNormalisedScalarValue(ofxAudioAnalysisClient::AnalysisScalar scalar, float minValue, float maxValue, bool isLinear=true);
 
 private:
