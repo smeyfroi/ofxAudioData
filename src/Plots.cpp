@@ -14,9 +14,9 @@ darkMode(darkMode_)
   changePlot(3, static_cast<int>(ofxAudioAnalysisClient::AnalysisScalar::pitch));
 }
 
-ofxHistoryPlot* Plots::makePlot(float* plottedValuePtr, std::string name, float low, float high) {
+std::unique_ptr<ofxHistoryPlot> Plots::makePlot(float* plottedValuePtr, std::string name, float low, float high) {
   float numSamples = ofGetWindowWidth() / 2;
-  ofxHistoryPlot* plotPtr = new ofxHistoryPlot(plottedValuePtr, name, numSamples, true);
+  auto plotPtr = std::make_unique<ofxHistoryPlot>(plottedValuePtr, name, numSamples, true);
   if (low != 0.0 || high != 0.0) {
 //    plotPtr->setLowerRange(low);
     plotPtr->setRange(low, high);
@@ -32,7 +32,7 @@ ofxHistoryPlot* Plots::makePlot(float* plottedValuePtr, std::string name, float 
   plotPtr->setRespectBorders(true);
   plotPtr->setDrawFromRight(true);
   plotPtr->setCropToRect(true);
-  plotPtr->update(0);
+//  plotPtr->update(0);
   return plotPtr;
 }
 
@@ -43,7 +43,7 @@ void Plots::resetPlots() {
 }
 
 void Plots::changePlot(size_t plotIndex, size_t valueIndex) {
-  plots[plotIndex] = std::unique_ptr<ofxHistoryPlot>(makePlot(processorPtr->getScalarValuePtr(valueIndex), scalarNames[valueIndex], minScalarValues[valueIndex], maxScalarValues[valueIndex]));
+  plots[plotIndex] = makePlot(processorPtr->getScalarValuePtr(valueIndex), scalarNames[valueIndex], minScalarValues[valueIndex], maxScalarValues[valueIndex]);
   plotValueIndexes[plotIndex] = valueIndex;
 }
 
@@ -63,6 +63,10 @@ bool Plots::keyPressed(int key, int plotIndex) {
     resetPlots();
   } else if (key == 'p') {
     plotsVisible = !plotsVisible;
+  } else if (key == 'P') {
+    // SpectrumPlots toggle
+    plotsVisible = false;
+    return true;
   } else {
     return false;
   }

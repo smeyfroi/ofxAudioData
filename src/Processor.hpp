@@ -13,6 +13,7 @@ public:
   float getScalarValue(ofxAudioAnalysisClient::AnalysisScalar scalar);
   float* getScalarValuePtr(int scalar); // for Plots, via ofxHistoryPlot
   float getNormalisedScalarValue(ofxAudioAnalysisClient::AnalysisScalar scalar, float minValue, float maxValue, bool isLinear=true);
+  inline auto& getMfcc() const { return audioAnalysisClientPtr->getMfcc(); };
 
 private:
   std::shared_ptr<ofxAudioAnalysisClient::BaseClient> audioAnalysisClientPtr;

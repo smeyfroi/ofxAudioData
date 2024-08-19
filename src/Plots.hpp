@@ -1,5 +1,6 @@
-#include "Processor.hpp"
+#pragma once
 
+#include "Processor.hpp"
 #include "ofxHistoryPlot.h"
 #include "ofxAudioAnalysisClient.h"
 
@@ -16,7 +17,7 @@ private:
   
   std::vector<std::unique_ptr<ofxHistoryPlot>> plots;
   std::vector<size_t> plotValueIndexes;
-  ofxHistoryPlot* makePlot(float* plottedValuePtr, std::string name, float low, float high);
+  std::unique_ptr<ofxHistoryPlot> makePlot(float* plottedValuePtr, std::string name, float low, float high);
   void resetPlots();
   void changePlot(size_t plotIndex, size_t valueIndex);
   bool plotsVisible;
